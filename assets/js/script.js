@@ -18,7 +18,7 @@ function init() {
 }
 
 
-function futurePast () {                             
+function futureOrPast () {                             
     timeRows.each(function () {
         let rowHour = $(this).data().hour.substr(0, 2)
         let rowNow = now.format('HH')
