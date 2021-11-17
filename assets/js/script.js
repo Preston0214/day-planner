@@ -45,6 +45,6 @@ function saveContent(){
 
 init();
 
-container.on('click', '.saveBtn', saveContent);
+container.on('click', '.saveButton', saveContent);
 
 
