@@ -1,30 +1,50 @@
-//on save button click save user itnput-----
-//save user input to local storage-----
-//take user input and display it in appropriate timeblock 
+let container = $('.container');                             
+let timeRows = $('.container').children();
+let content = ['', '', '', '', '', '', '', '', ''];
+let now = moment();
+let current = $('#currentDay');
 
-var today = $('#currentDay')
-var now = moment()
-var allNotes = ['','','','','','','','','']
-var lastNote = localStorage.getItem('note')
-var saveBtn = $('.saveNotes')
+function init() {
+    current.text('Today is: ' + now.format('MMMM DD YYYY'));       
+    futurePast();                                        
 
-today.text("Today is: " + (now.format("MMMM, DD, YYYY")))
-
-
-
-
-
-
-
-
-function saveNotes() {
-    var userNote = $(this).parent().closest('textarea').val();
-    var hour = $(this).parent().attr('id');
-    localStorage.setItem(hour, userNote);
-    console.log(userNote)
+    if(localStorage.getItem('notes') !== null){                   
+    content = JSON.parse(localStorage.getItem('notes'));
+    
+    timeRows.find('textarea').each(function (i) {
+        $(this).text(content[i])
+    })
+    } 
 }
 
-saveBtn.on('click', saveNotes())
 
+function futurePast () {                             
+    timeRows.each(function () {
+        let rowHour = $(this).data().hour.substr(0, 2)
+        let rowNow = now.format('HH')
+
+    if(rowNow < rowHour){
+        $(this).addClass('future');
+
+    } else if (rowNow == rowHour){
+        $(this).addClass('present');
+
+    } else if (rowNow > rowHour){
+        $(this).addClass('past');
+    };
+    })
+};
+
+function saveContent(){                                 
+    let value = $(this).siblings().eq(1).val();
+    let iLocation = $(this).data().index;   
+    content[iLocation] = value;  
+    localStorage.setItem('notes', JSON.stringify(content));
+};
+
+
+init();
+
+container.on('click', '.saveBtn', saveContent);
 
 
